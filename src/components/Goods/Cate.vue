@@ -118,25 +118,26 @@
     </el-dialog>
 
     <!--    编辑的对话框-->
-    <el-dialog
-      title="修改分类"
-      :visible.sync="editCateDiaVisible"
-      width="30%"
-    >
-      <el-form :model="editCateName" :rules="addCateFormRules" ref="EditRuleFormRef" label-width="100px" >
+    <el-dialog title="修改分类" :visible.sync="editCateDiaVisible" width="30%">
+      <el-form
+        :model="editCateName"
+        :rules="addCateFormRules"
+        ref="EditRuleFormRef"
+        label-width="100px"
+      >
         <el-form-item label="分类" prop="name">
           <el-input v-model="editCateName.cat_name"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="editCateDiaVisible = false">取 消</el-button>
-        <el-button type="primary" @click="pushNewCateName(editCateName.cat_id,editCateName.cat_name)"
+        <el-button
+          type="primary"
+          @click="pushNewCateName(editCateName.cat_id, editCateName.cat_name)"
           >确 定</el-button
         >
       </span>
     </el-dialog>
-
-
   </div>
 </template>
 
@@ -201,8 +202,8 @@ export default {
 
       // 选中的父级分类的ID数组
       selectedKeys: [],
-      editCateDiaVisible:false,
-      editCateName:{},
+      editCateDiaVisible: false,
+      editCateName: {},
     }
   },
 
@@ -288,20 +289,20 @@ export default {
     },
     editCateDialogVis(sin) {
       this.editCateName = sin
-      this.editCateDiaVisible= true
+      this.editCateDiaVisible = true
     },
 
     // 根据id删除分类信息
     async deleteCateDialogVis(id) {
       // 弹框询问是否确认删除
       const confirmResult = await this.$confirm(
-          '此操作将永久删除该用户, 是否继续?',
-          '提示',
-          {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-          }
+        '此操作将永久删除该用户, 是否继续?',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
       ).catch((err) => err)
       if (confirmResult !== 'confirm') {
         return this.$message.info('已经取消删除！')
@@ -313,10 +314,14 @@ export default {
       this.$message.success('删除用户成功')
       await this.getCateList()
     },
-    async pushNewCateName(cat_id,cat_new_name){
-      const {data:res} = await this.$http.put(`categories/${cat_id}`,{cat_name:cat_new_name})
-      if(res.meta.status!==200 ){return this.$message.error("商品分类更新失败！")}
-      this.$message.success("分类信息更新成功！")
+    async pushNewCateName(cat_id, cat_new_name) {
+      const { data: res } = await this.$http.put(`categories/${cat_id}`, {
+        cat_name: cat_new_name,
+      })
+      if (res.meta.status !== 200) {
+        return this.$message.error('商品分类更新失败！')
+      }
+      this.$message.success('分类信息更新成功！')
       await this.getCateList()
     },
   },
